@@ -1,14 +1,24 @@
 <template>
     <div class="cart">
-        <h2>carret</h2>
+        <h2>Carret</h2>
+        <p>{{ cart.length }} articles</p>
         <ul>
-            <li v-for="item in cart" :key="item.name">{{ item.name }}-{{ item.price }}</li>
+            <CartItem
+                v-for="(item, index) in cart"
+                :key="index"
+                :item="item"
+            />
         </ul>
         <p class="total">{{ total }}</p>
+        <button @click="clearCart" :disabled="cart.length === 0">🗑️ Buida carret</button>
     </div>
 </template>
-<script>
-import { inject,computed } from 'vue';
-const cart =inject ('cart')
-const total = computed(() => cart.reduce((sum,p)=>sum+p.price,0))
+
+<script setup>
+import { inject, computed } from 'vue'
+import CartItem from './CartItem.vue'
+
+const cart = inject('cart')
+const total = computed(() => cart.reduce((sum, product) => sum + product.price, 0))
+const clearCart = () => cart.splice(0)
 </script>
